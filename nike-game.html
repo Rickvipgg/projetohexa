@@ -269,7 +269,7 @@ body::before {
     <div class="popup-emoji">🎉</div>
     <p class="popup-tag">Parabéns!</p>
     <p class="popup-sub">Você desbloqueou um prêmio exclusivo:</p>
-    <div class="popup-prize">80% OFF</div>
+    <div class="popup-prize">90% OFF</div>
     <p class="popup-warn">🔥 Esse desconto é temporário e pode expirar a qualquer momento.</p>
     <button class="popup-btn" id="popupBtn">
       <span>GARANTIR MEU DESCONTO AGORA</span>
@@ -329,7 +329,7 @@ body::before {
 <!-- SOCIAL PROOF -->
 <div class="social-proof">
   <div class="social-dot"></div>
-  <span class="social-text" id="socialText">Pedro A. acabou de resgatar 80% OFF</span>
+  <span class="social-text" id="socialText">Pedro A. acabou de resgatar 90% OFF</span>
 </div>
 
 <script>
@@ -386,7 +386,7 @@ function cardContent(type) {
     label.style.whiteSpace = 'pre';
   } else if (type === 'desconto_80') {
     icon.innerHTML = `<svg width="26" height="22" viewBox="0 0 24 24" fill="none"><path d="M2 9a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2a2 2 0 0 0 0 2v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-2V9z" stroke="#9aff9a" stroke-width="1.5"/><path d="M9 12h6M12 9v6" stroke="#9aff9a" stroke-width="1.5" stroke-linecap="round"/></svg>`;
-    label.textContent = '80% OFF';
+    label.textContent = '90% OFF';
   } else if (type === 'bomba') {
     icon.textContent = '💣';
   }
@@ -436,7 +436,7 @@ function handleClick(index) {
 
         setTimeout(() => {
           setStatus('2/2 PRÊMIOS ENCONTRADOS', 'green');
-          showRoundMsg('VOCÊ DESBLOQUEOU 80% OFF!', 'Revelando onde as bombas estavam...', 'green');
+          showRoundMsg('VOCÊ DESBLOQUEOU 90% OFF!', 'Revelando onde as bombas estavam...', 'green');
           phase = 'done';
 
           setTimeout(() => showPopup(), 2200);
@@ -545,13 +545,13 @@ function restart() {
 
 // ── SOCIAL PROOF ──
 const names = [
-  'Pedro A. acabou de resgatar 80% OFF',
-  'Ana P. acabou de resgatar 80% OFF',
-  'Carlos M. acabou de resgatar 80% OFF',
+  'Pedro A. acabou de resgatar 90% OFF',
+  'Ana P. acabou de resgatar 75% OFF',
+  'Carlos M. acabou de resgatar 40% OFF',
   'Juliana S. acabou de resgatar 80% OFF',
-  'Lucas R. acabou de resgatar 80% OFF',
-  'Mariana T. acabou de resgatar 80% OFF',
-  'Rafael B. acabou de resgatar 80% OFF',
+  'Lucas R. acabou de resgatar 60% OFF',
+  'Mariana T. acabou de resgatar 55% OFF',
+  'Rafael B. acabou de resgatar 100% OFF',
   'Camila F. acabou de resgatar 80% OFF',
 ];
 let nameIdx = 0;
