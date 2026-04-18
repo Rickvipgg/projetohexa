@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel · Visitantes Online</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #080c10;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    color: #e0e8f0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .panel {
+    width: 100%;
+    max-width: 420px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 28px;
+    padding: 40px 36px;
+    text-align: center;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+    position: relative;
+    overflow: hidden;
+  }
+  .panel::before {
+    content: '';
+    position: absolute; top: 0; left: 15%; right: 15%; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.14), transparent);
+  }
+
+  .label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #4a5a6a;
+    margin-bottom: 28px;
+  }
+
+  /* Live dot */
+  .live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(16,185,80,0.1);
+    border: 1px solid rgba(16,185,80,0.2);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #4ade80;
+    margin-bottom: 32px;
+  }
+  .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 8px rgba(74,222,128,0.8);
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(0.7); }
+  }
+
+  /* Big counter */
+  .counter-wrap {
+    position: relative;
+    margin-bottom: 12px;
+  }
+  .counter {
+    font-size: 96px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    background: linear-gradient(160deg, #a7f3a7 0%, #4ade80 50%, #22c55e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 32px rgba(74,222,128,0.35));
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .counter.bump {
+    filter: drop-shadow(0 0 48px rgba(74,222,128,0.7));
+    transform: scale(1.06);
+  }
+
+  .counter-label {
+    font-size: 13px;
+    color: #4a5a6a;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    margin-bottom: 36px;
+  }
+
+  /* Stats row */
+  .stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .stat {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 16px 12px;
+  }
+  .stat-val {
+    font-size: 24px;
+    font-weight: 700;
+    color: #d0e8ff;
+    letter-spacing: -0.02em;
+  }
+  .stat-key {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #3a4a5a;
+    margin-top: 4px;
+  }
+
+  /* History mini chart */
+  .history-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #3a4a5a;
+    text-align: left;
+    margin-bottom: 10px;
+  }
+  .bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    height: 48px;
+    margin-bottom: 28px;
+  }
+  .bar {
+    flex: 1;
+    border-radius: 4px 4px 0 0;
+    background: rgba(74,222,128,0.15);
+    transition: height 0.4s ease, background 0.3s;
+    min-height: 4px;
+  }
+  .bar.current {
+    background: rgba(74,222,128,0.55);
+    box-shadow: 0 0 8px rgba(74,222,128,0.3);
+  }
+
+  /* Footer */
+  .footer {
+    font-size: 10px;
+    color: #2a3a4a;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .footer span { color: #3a5a3a; }
+
+  /* Connection error */
+  .error-msg {
+    display: none;
+    font-size: 12px;
+    color: #f87171;
+    background: rgba(248,113,113,0.08);
+    border: 1px solid rgba(248,113,113,0.2);
+    border-radius: 12px;
+    padding: 10px 16px;
+    margin-bottom: 20px;
+  }
+</style>
+</head>
+<body>
+
+<div class="panel">
+  <p class="label">Painel Admin · Nike Brasil</p>
+
+  <div class="live-badge">
+    <div class="dot"></div>
+    Ao vivo
+  </div>
+
+  <p class="error-msg" id="errorMsg">
+    ⚠️ Configure as credenciais Firebase no arquivo
+  </p>
+
+  <div class="counter-wrap">
+    <div class="counter" id="counter">—</div>
+  </div>
+  <p class="counter-label">visitantes online agora</p>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-val" id="statPeak">—</div>
+      <div class="stat-key">Pico hoje</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val" id="statTotal">—</div>
+      <div class="stat-key">Total hoje</div>
+    </div>
+  </div>
+
+  <p class="history-label">Últimos 10 registros</p>
+  <div class="bars" id="barsWrap">
+    <!-- preenchido via JS -->
+  </div>
+
+  <p class="footer">Atualização em tempo real · <span>Firebase RTDB</span></p>
+</div>
+
+<script type="module">
+  import { initializeApp }    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getDatabase, ref, onValue }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+  // ══ COLE SUAS CREDENCIAIS FIREBASE AQUI ══
+  const firebaseConfig = {
+    apiKey:            "AIzaSyCqWoClgrmfIcZtWI7jDp_RbdaHn8wFZl8",
+    authDomain:        "nike-brasil.firebaseapp.com",
+    databaseURL:       "https://nike-brasil-default-rtdb.firebaseio.com",
+    projectId:         "nike-brasil",
+    storageBucket:     "nike-brasil.firebasestorage.app",
+    messagingSenderId: "436825239334",
+    appId:             "1:436825239334:web:b52269b28af98344821be7"
+  };
+  // ═════════════════════════════════════════
+
+  // Valida se as credenciais foram preenchidas
+
+
+  const app = initializeApp(firebaseConfig);
+  const db  = getDatabase(app);
+
+  // ── Estado local ──
+  let peak  = 0;
+  let total = 0;
+  const history = [];
+
+  const counterEl  = document.getElementById('counter');
+  const peakEl     = document.getElementById('statPeak');
+  const totalEl    = document.getElementById('statTotal');
+  const barsWrap   = document.getElementById('barsWrap');
+
+  // ── Ouve /online em tempo real ──
+  const onlineRef = ref(db, 'online');
+  onValue(onlineRef, (snap) => {
+    const count = snap.exists() ? Object.keys(snap.val()).length : 0;
+
+    // Animação no número
+    counterEl.classList.remove('bump');
+    void counterEl.offsetWidth; // reflow
+    counterEl.classList.add('bump');
+    setTimeout(() => counterEl.classList.remove('bump'), 400);
+
+    counterEl.textContent = count;
+
+    // Pico
+    if (count > peak) { peak = count; peakEl.textContent = peak; }
+
+    // Total acumulado (conta entradas novas)
+    if (history.length === 0 || count > (history[history.length - 1] || 0)) {
+      total += Math.max(0, count - (history[history.length - 1] || 0));
+      totalEl.textContent = total;
+    }
+
+    // Histórico para mini gráfico (últimos 10)
+    history.push(count);
+    if (history.length > 10) history.shift();
+    renderBars();
+  });
+
+  function renderBars() {
+    const max = Math.max(...history, 1);
+    barsWrap.innerHTML = history.map((v, i) => {
+      const h = Math.round((v / max) * 44) + 4;
+      const isCurrent = i === history.length - 1;
+      return `<div class="bar${isCurrent ? ' current' : ''}" style="height:${h}px" title="${v} online"></div>`;
+    }).join('');
+    // Preenche até 10 barras
+    const empty = 10 - history.length;
+    for (let i = 0; i < empty; i++) {
+      barsWrap.innerHTML = `<div class="bar" style="height:4px"></div>` + barsWrap.innerHTML;
+    }
+  }
+
+  // Init bars
+  renderBars();
+</script>
+</body>
+</html>
