@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Nike · Camisa do Brasil</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #000000;
+    --surface: #0a0a0a;
+    --glass-bg: rgba(255,255,255,0.025);
+    --glass-border: rgba(255,255,255,0.07);
+    --glass-shine: rgba(255,255,255,0.08);
+    --silver: #b0b8c1;
+    --silver-light: #d4dde6;
+    --green-plata: #9aff9a;
+    --green-mid: #5aef5a;
+    --green-glow: rgba(90,239,90,0.18);
+    --text-main: #f0f4f8;
+    --text-muted: #6b7a8a;
+    --text-dim: #3a4550;
+  }
+
+  html, body {
+    width: 100%; min-height: 100vh;
+    background: var(--black);
+    font-family: 'Barlow', sans-serif;
+    color: var(--text-main);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.4;
+  }
+
+  /* ── AMBIENT GLOW ── */
+  .ambient-top {
+    position: fixed; top: -120px; left: 50%; transform: translateX(-50%);
+    width: 500px; height: 300px;
+    background: radial-gradient(ellipse, rgba(154,255,154,0.06) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+  }
+  .ambient-mid {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 700px; height: 400px;
+    background: radial-gradient(ellipse, rgba(90,239,90,0.04) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+  }
+
+  /* ── PAGE WRAPPER ── */
+  .page {
+    position: relative; z-index: 1;
+    max-width: 430px; margin: 0 auto;
+    padding: 0 0 60px;
+    display: flex; flex-direction: column; align-items: center; gap: 0;
+  }
+
+  /* ── LIQUID GLASS MIXIN ── */
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(18px) saturate(1.4);
+    -webkit-backdrop-filter: blur(18px) saturate(1.4);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .glass::before {
+    content: '';
+    position: absolute; inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg, var(--glass-shine) 0%, transparent 50%, transparent 100%);
+    pointer-events: none;
+  }
+  /* inner top highlight line */
+  .glass::after {
+    content: '';
+    position: absolute; top: 0; left: 10%; right: 10%; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    width: calc(100% - 32px);
+    margin: 20px 16px 0;
+    padding: 18px 24px;
+    display: flex; justify-content: center; align-items: center;
+    border-radius: 28px;
+    animation: fadeDown 0.6s ease both;
+  }
+  .nike-swoosh {
+    width: 58px; height: auto; opacity: 0.95;
+    filter: drop-shadow(0 0 12px rgba(154,255,154,0.15));
+  }
+
+  /* ── HERO CARD ── */
+  .hero-card {
+    width: calc(100% - 32px);
+    margin: 14px 16px 0;
+    padding: 32px 28px 28px;
+    animation: fadeUp 0.7s 0.1s ease both;
+  }
+
+  .campaign-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px; font-weight: 600; letter-spacing: 0.22em;
+    color: var(--silver); text-transform: uppercase;
+    margin-bottom: 14px; opacity: 0.7;
+  }
+
+  .hero-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 52px; font-weight: 900; line-height: 0.92;
+    text-transform: uppercase; letter-spacing: -0.01em;
+    margin-bottom: 4px;
+    background: linear-gradient(160deg, #ffffff 30%, var(--silver-light) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 2px 20px rgba(255,255,255,0.08));
+  }
+  .hero-title-sub {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 48px; font-weight: 800; line-height: 1;
+    text-transform: uppercase; letter-spacing: -0.01em;
+    margin-bottom: 22px;
+    background: linear-gradient(160deg, var(--silver) 0%, #6a7a86 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-desc {
+    font-size: 14.5px; font-weight: 400; line-height: 1.65;
+    color: var(--silver-light); opacity: 0.82;
+    margin-bottom: 28px;
+  }
+  .hero-desc strong { color: #fff; font-weight: 700; }
+
+  /* ── COLOR SELECTOR ── */
+  .color-section {
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+  }
+  .color-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px; font-weight: 600; letter-spacing: 0.2em;
+    color: var(--text-muted); text-transform: uppercase;
+  }
+  .color-dots {
+    display: flex; gap: 20px; align-items: center;
+  }
+  .color-dot-wrap {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    cursor: pointer;
+  }
+  .color-dot {
+    width: 36px; height: 36px; border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.15);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+  }
+  .color-dot::after {
+    content: '';
+    position: absolute; top: 3px; left: 5px; width: 10px; height: 5px;
+    background: rgba(255,255,255,0.35);
+    border-radius: 50%;
+    filter: blur(2px);
+    transform: rotate(-30deg);
+  }
+  .color-dot.azul { background: #1a56db; box-shadow: 0 0 14px rgba(26,86,219,0.4); }
+  .color-dot.amarela { background: #f7b731; box-shadow: 0 0 14px rgba(247,183,49,0.4); }
+  .color-dot:hover { transform: scale(1.15); }
+  .dot-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px; font-weight: 600; letter-spacing: 0.15em;
+    color: var(--text-muted); text-transform: uppercase;
+  }
+
+  /* ── VIDEO BLOCK ── */
+  .video-block {
+    width: calc(100% - 32px);
+    margin: 14px 16px 0;
+    display: flex; justify-content: center;
+    animation: fadeUp 0.7s 0.2s ease both;
+  }
+  .video-wrapper {
+    width: 280px; height: 320px;
+    border-radius: 22px;
+    border: 1px solid var(--glass-border);
+    background: transparent;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+    /* remove any solid bg so a video placed here shows thru */
+  }
+  .video-wrapper video,
+  .video-wrapper iframe {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover; border-radius: 22px;
+    background: transparent;
+  }
+  /* drop-zone placeholder (hidden when video is present) */
+  .video-placeholder {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 14px;
+    color: var(--text-muted); pointer-events: none;
+  }
+  .play-ring {
+    width: 62px; height: 62px; border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.14);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .play-ring::before {
+    content: '';
+    position: absolute; inset: -5px; border-radius: 50%;
+    border: 1px solid rgba(154,255,154,0.12);
+  }
+  .play-ring svg { width: 22px; height: 22px; fill: rgba(255,255,255,0.6); margin-left: 3px; }
+  .video-hint {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--text-muted); opacity: 0.6;
+  }
+
+  /* ── PRICE CARD ── */
+  .price-card {
+    width: calc(100% - 32px);
+    margin: 14px 16px 0;
+    padding: 28px 28px 32px;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    animation: fadeUp 0.7s 0.3s ease both;
+  }
+
+  .price-from {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px; font-weight: 500; letter-spacing: 0.05em;
+    color: var(--text-muted); text-decoration: line-through;
+    text-decoration-color: var(--text-dim);
+  }
+  .price-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.18em;
+    color: var(--silver); text-transform: uppercase; margin-top: 4px;
+  }
+  .price-main {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 76px; font-weight: 900; letter-spacing: -0.03em; line-height: 1;
+    margin: 4px 0;
+    background: linear-gradient(160deg, var(--green-plata) 0%, var(--green-mid) 60%, #38c338 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 30px rgba(90,239,90,0.3));
+    animation: pulsePriceShadow 3s ease-in-out infinite;
+  }
+  @keyframes pulsePriceShadow {
+    0%,100% { filter: drop-shadow(0 0 28px rgba(90,239,90,0.28)); }
+    50%      { filter: drop-shadow(0 0 44px rgba(90,239,90,0.50)); }
+  }
+  .price-tiers {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px; font-weight: 600; letter-spacing: 0.18em;
+    color: var(--text-muted); text-transform: uppercase; margin-top: 8px;
+  }
+  .price-tiers span { color: var(--green-plata); opacity: 0.9; }
+
+  /* ── CTA BUTTON ── */
+  .cta-wrap {
+    width: calc(100% - 32px);
+    margin: 14px 16px 0;
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    animation: fadeUp 0.7s 0.4s ease both;
+  }
+  .btn-unlock {
+    width: 100%;
+    padding: 20px 28px;
+    border-radius: 50px;
+    border: 1px solid rgba(154,255,154,0.22);
+    background: linear-gradient(135deg,
+      rgba(154,255,154,0.07) 0%,
+      rgba(90,239,90,0.04) 50%,
+      rgba(154,255,154,0.06) 100%);
+    backdrop-filter: blur(20px) saturate(1.5);
+    -webkit-backdrop-filter: blur(20px) saturate(1.5);
+    cursor: pointer;
+    position: relative; overflow: hidden;
+    transition: transform 0.18s, box-shadow 0.18s;
+    /* top shine */
+  }
+  .btn-unlock::before {
+    content: '';
+    position: absolute; top: 0; left: 8%; right: 8%; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(154,255,154,0.35), transparent);
+  }
+  .btn-unlock::after {
+    content: '';
+    position: absolute; inset: 0; border-radius: inherit;
+    background: linear-gradient(135deg, rgba(255,255,255,0.07) 0%, transparent 55%);
+    pointer-events: none;
+  }
+  .btn-unlock:hover { transform: translateY(-2px); box-shadow: 0 8px 36px rgba(90,239,90,0.18); }
+  .btn-unlock:active { transform: scale(0.98); }
+  .btn-unlock-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 17px; font-weight: 800; letter-spacing: 0.18em;
+    text-transform: uppercase; color: #e8ffe8;
+    position: relative; z-index: 1;
+  }
+  .btn-sublabel {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px; font-weight: 500; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--text-muted);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: #000; }
+  ::-webkit-scrollbar-thumb { background: #1e2a1e; border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div class="ambient-top"></div>
+<div class="ambient-mid"></div>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header glass">
+    <img class="nike-swoosh" src="data:image/png;base64,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" alt="Nike">
+  </div>
+
+  <!-- HERO CARD -->
+  <div class="hero-card glass">
+    <p class="campaign-label">Campanha Rumo ao Hexa Nike</p>
+    <h1 class="hero-title">Promoção Exclusiva</h1>
+    <h2 class="hero-title-sub">Camisa do Brasil</h2>
+    <p class="hero-desc">
+      Desbloqueie até <strong>100% OFF</strong> na nova camisa da Seleção Brasileira — promoção relâmpago liberada por tempo limitado.
+    </p>
+    <div class="color-section">
+      <span class="color-label">Disponível em</span>
+      <div class="color-dots">
+        <div class="color-dot-wrap">
+          <div class="color-dot azul"></div>
+          <span class="dot-name">Azul</span>
+        </div>
+        <div class="color-dot-wrap">
+          <div class="color-dot amarela"></div>
+          <span class="dot-name">Amarela</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIDEO BLOCK -->
+  <div class="video-block">
+    <div class="video-wrapper" id="videoArea">
+      <!-- 
+        ══════════════════════════════════════════════
+        ÁREA DO VÍDEO — fundo transparente
+        Cole aqui sua tag <video> ou <iframe>:
+
+        Exemplo:
+        <video autoplay muted loop playsinline>
+          <source src="camisa-brasil.mp4" type="video/mp4">
+        </video>
+        ══════════════════════════════════════════════
+      -->
+      <div class="video-placeholder">
+        <div class="play-ring">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <span class="video-hint">Área do vídeo</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRICE CARD -->
+  <div class="price-card glass">
+    <span class="price-from">De R$ 449,99</span>
+    <span class="price-label">Podendo chegar a</span>
+    <span class="price-main">R$ 49,90</span>
+    <span class="price-tiers">Descontos de <span>50%</span> · <span>80%</span> · até <span>100%</span></span>
+  </div>
+
+ <!-- CTA -->
+<div class="cta-wrap">
+  <button class="btn-unlock" onclick="window.location.href='nike-game.html'">
+    <span class="btn-unlock-label">Desbloquear a Oferta</span>
+  </button>
+  <span class="btn-sublabel">Oferta por tempo limitado</span>
+ </div>
+
+</div>
+
+</body>
+</html>
